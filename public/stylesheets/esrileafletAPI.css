@@ -1,0 +1,34 @@
+/*导航条整体样式*/
+#navDIV{
+	font-weight: bold;
+	font-family:"微软雅黑";
+	align-items: center;
+}
+
+#menuUL{
+	font-size:medium;
+	font-family: "新宋体";
+}
+
+/*地图主窗口样式*/
+#map{
+	margin-top: 350px; 
+	position: absolute; 
+	top:0; 
+	bottom:0; 
+	right:0; 
+	left:0;
+}
+/*底图下拉选择框样式*/
+#basemaps-wrapper {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    z-index: 400;
+    background: white;
+    padding: 10px;
+ }
+ /*底图样式*/
+ #basemaps {
+    margin-top: 5px;
+ }

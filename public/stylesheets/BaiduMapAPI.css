@@ -1,0 +1,13 @@
+#baidumap{
+	/*宽度100%*/
+	width:100%;
+	/*无边界，自动调整*/
+	margin: 0 auto;
+	/*相对位置*/
+	height: 480px;
+	overflow: hidden;
+}
+#navbar{
+	font-size:large; 
+	font-family: 'book antiqua';
+}

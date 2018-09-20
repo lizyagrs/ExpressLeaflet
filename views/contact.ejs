@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
+		<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	    <script type="text/javascript" src="../public/javascripts/bootstrap.min.js" ></script>
+	    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=18NwnTeKzmkoMSpsNCTkUudt"></script>
+		<script type="text/javascript" src="../public/javascripts/ContactBaiduMap.js" ></script>
+	    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+	 	<!-- Bootstrap -->
+	  	<link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css" />
+		<link rel="stylesheet" href="../public/stylesheets/ContactBaiduMap.css" />
+		<link rel="stylesheet" href="../public/stylesheets/esrileafletAPI.css" />
+		<title>联系我们</title>
+	</head>
+	<body onload="init()">
+		<!--
+        	作者：77211356@qq.com
+        	时间：2018-06-13
+        	描述：navbar-transparent ，代表透明，与default冲突，不能同时放
+        -->	    
+	    <div class="navbar-default " id="navDIV" >
+		    <nav class="navbar navbar-default" role="navigation" >
+			    <div class="container-fluid">
+				    <div class="navbar-header" >
+				        <a class="navbar-brand" >轻量级WebGIS入门教程</a>
+				    </div>
+				    <div>
+				       <!--向左对齐-->
+						<ul class="nav navbar-nav " id="menuUL">
+							<li><a title="主页" href="/">home</a></li>
+							
+							<li><a href="https://leafletjs.com/"><span class="glyphicon glyphicon-th"></span> LeafletAPI</a></li> 
+							<li><a href="http://www.bootcss.com/"><span class="glyphicon glyphicon-signal"></span> Bootstrap官网</a></li>
+							<li><a href="https://www.runoob.com/bootstrap/bootstrap-tutorial.html"><span class="glyphicon glyphicon-cog"></span>Bootstrap菜鸟教程</a></li>
+						</ul>	
+				        	
+				        <!--向右对齐-->
+				        <ul class="nav navbar-nav navbar-right"> 
+				             
+				            <li><a href="/reg"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
+				            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> 
+							<li><a href="/Contact"><span class="glyphicon glyphicon-envelope"></span> 联系我们</a></li>
+				        </ul> 
+				    </div>
+			    </div>
+			</nav>
+		</div>
+		<div id="baidumap">
+			
+		</div>
+		<div id="footinfo">
+	        <h4 class="col-xs-offset-1">版权所有：湖北大学资源环境学院</h4>
+	        
+	        <div class="container col-xs-offset-1">
+	        	<p class="glyphicon glyphicon-earphone">&nbsp;电话：02788661699-8081</p>
+	        	<br />
+	        	<p class="glyphicon glyphicon-envelope" >&nbsp;Email：77211356@qq.com</p> 
+	        </div>
+		</div>
+	</body>
+</html>

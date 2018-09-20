@@ -1,0 +1,8 @@
+
+<%- include header %>
+   <% if(locals.islogin){%>
+  用户：<h2><%= test %></h2>已经登陆
+<% }else{%>
+<p><a href="/login">登录</a></p>
+<%}%>
+<%- include footer %>
