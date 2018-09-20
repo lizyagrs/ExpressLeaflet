@@ -13,39 +13,7 @@
 	    <script type="text/javascript" src="../javascripts/bootstrap.min.js" ></script>
 	    <script type="text/javascript" src="../javascripts/leaflet.js" ></script>
 		<script type="text/javascript" src="../javascripts/esri-leaflet.js" ></script>
+		<script type="text/javascript" src="../javascripts/LeafletMap.js" ></script>
 	<title><%= title %></title>
 </head>
-<body>
-	
-	<div class="navbar-default " id="navDIV" >
-		<nav class="navbar navbar-default" role="navigation" >
-			<div class="container-fluid">
-				<div class="navbar-header" >
-					<a class="navbar-brand" >轻量级WebGIS入门教程</a>
-				</div>
-				<div>
-					<!--向左对齐-->
-					<ul class="nav navbar-nav " id="menuUL">
-						<li><a title="主页" href="/"><span class="glyphicon glyphicon-home"></span>主页</a></li>
-						<li><a href="https://leafletjs.com/" target="_blank"><span class="glyphicon glyphicon-leaf"></span> LeafletAPI</a></li> 
-						<li><a href="http://www.bootcss.com/" target="_blank"><span class="glyphicon glyphicon-bold"></span> Bootstrap官网</a></li>
-						<li><a href="https://www.runoob.com/bootstrap/bootstrap-tutorial.html" target="_blank"><span class="glyphicon glyphicon-globe"></span> 菜鸟教程</a></li>
-					</ul>	
-						
-					<!--向右对齐-->
-					<ul class="nav navbar-nav navbar-right"> 
-						 <li><a class="btn" href="/logout">欢迎 登录！退出</a></li>
-						<li><a href="/reg"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
-						<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> 
-						<!-- <li><a href="/contact"><span class="glyphicon glyphicon-envelope"></span> 联系我们</a></li> -->
-					</ul> 
-				</div>
-			</div>
-		</nav>
-	</div>
-	<div id="map"></div>
-    <script>
-	      var map = L.map("map").setView([30.56486,114.353622 ], 10);
-	      //114.353622,30.56486), 5
-	      L.esri.basemapLayer("Topographic").addTo(map);
-    </script>
+<body onload="init()">

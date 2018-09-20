@@ -1,8 +1,6 @@
 
 <%- include header %>
-   <% if(locals.islogin){%>
-  用户：<h2><%= test %></h2>已经登陆
-<% }else{%>
-<p><a href="/login">登录</a></p>
-<%}%>
+<%- include navbar %>
+<div id="map"></div>
+<%- include Modal_Contact %>
 <%- include footer %>

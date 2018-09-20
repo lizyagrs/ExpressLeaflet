@@ -39,7 +39,7 @@ router.route('/login')
                     req.session.islogin=req.body.username;
                     res.locals.islogin=req.session.islogin;
                     res.cookie('islogin',res.locals.islogin,{maxAge:60000});
-                    res.redirect('/home');
+                    res.redirect('/');
                 }else
                 {
                     res.redirect('/login');
@@ -53,7 +53,6 @@ router.get('/logout', function(req, res) {
     req.session.destroy();
     res.redirect('/');
 });
-
 router.get('/home', function(req, res) {
     if(req.session.islogin){
         res.locals.islogin=req.session.islogin;
@@ -61,7 +60,7 @@ router.get('/home', function(req, res) {
     if(req.cookies.islogin){
         req.session.islogin=req.cookies.islogin;
     }
-    res.render('home', { title: 'Home', user: res.locals.islogin });
+    res.render('index', { title: 'Home', test: res.locals.islogin });
 });
 
 router.route('/reg')
@@ -73,9 +72,11 @@ router.route('/reg')
 		pgclient.save('userinfo',{'username': req.body.username,'password': req.body.password2}, function (err) {
             pgclient.select('userinfo',{'username': req.body.username},'', function (result) {
 				if(result[0]===undefined){
-					res.send('注册没有成功请，重新注册');
+					res.send('注册没有成功，请重新注册');
 				}else{
-					res.send('注册成功');
+//					res.send('注册成功！');
+//					res.render('login', { title: '用户登录' ,test:res.locals.islogin});
+					res.redirect('/login');
 				}
 			}); 
         });
