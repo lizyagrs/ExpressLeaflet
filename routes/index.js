@@ -75,7 +75,6 @@ router.route('/reg')
 					res.send('注册没有成功，请重新注册');
 				}else{
 //					res.send('注册成功！');
-//					res.render('login', { title: '用户登录' ,test:res.locals.islogin});
 					res.redirect('/login');
 				}
 			}); 

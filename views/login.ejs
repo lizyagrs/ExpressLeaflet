@@ -2,10 +2,7 @@
 <%- include navbar %>
 <div class="container">
 	<form class="form-horizontal" role="form" method="post">
-	  <% if(locals.islogin) { %>
-	   用户：<h3> <%= test %></h3>已经登陆。<br>
-	   <a class="btn" href="/logout">登出</a>
-		<% } else{ %>
+	  
 		  <div class="form-group">
 			<div class="input-group input-group-lg  col-xs-4 col-xs-offset-4">
 					<span class="input-group-addon">用&nbsp;&nbsp;户&nbsp;名</span>
@@ -26,7 +23,8 @@
 			  <button type="reset" class="btn btn-warning  btn-lg">重置</button>
 			</div>
 		  </div>
-		<% } %>
+		
 	</form>
 </div>
+<%- include Modal_Contact %>
 <%- include footer %>
