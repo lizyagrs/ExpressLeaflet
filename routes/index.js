@@ -9,10 +9,10 @@ router.get('/', function(req, res) {
     if(req.cookies.islogin){
         req.session.islogin=req.cookies.islogin;
     }
-if(req.session.islogin){
-    res.locals.islogin=req.session.islogin;
-}
-  res.render('index', { title: 'HOME',test:res.locals.islogin});
+	if(req.session.islogin){
+	    res.locals.islogin=req.session.islogin;
+	}
+  	res.render('index', { title: 'HOME',test:res.locals.islogin});
 });
 
 
@@ -69,7 +69,7 @@ router.route('/reg')
     })
     .post(function(req,res) {
         
-		pgclient.save('userinfo',{'username': req.body.username,'password': req.body.password2}, function (err) {
+		pgclient.save('userinfo',{'username': req.body.username,'password': req.body.password2,'email': req.body.email,'telephone': req.body.telephone}, function (err) {
             pgclient.select('userinfo',{'username': req.body.username},'', function (result) {
 				if(result[0]===undefined){
 					res.send('注册没有成功，请重新注册');

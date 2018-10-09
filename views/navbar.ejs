@@ -17,6 +17,7 @@
 					<ul class="nav navbar-nav navbar-right"> 
 						 <li><a href=""><% if(locals.islogin){%>  <span class="glyphicon glyphicon-user">&nbsp;</span>欢迎：&nbsp;<%= test %></a></li>
 						 <li><a class="btn" href="/logout"><span class="glyphicon glyphicon-log-out"></span>退出</a></li>
+						 <li><a class="btn" href="/users"><span class="glyphicon glyphicon-tasks"></span>数据管理</a></li>
 						 <% }else{%>
 							<li><a href="/reg"><span class="glyphicon glyphicon-user"></span> 注册</a></li> 
 							<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li> 
