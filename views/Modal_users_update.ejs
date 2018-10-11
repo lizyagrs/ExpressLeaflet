@@ -1,0 +1,66 @@
+
+<div class="modal fade  bs-example-modal-lg" id="Modal_users_update" tabindex="-1" role="dialog" aria-labelledby="Modal_users_update" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="Modal_users_update" align="center">用户信息修改</h4>
+			</div><!-- / .modal-header-->
+			<div class="modal-body">
+				<div class="container">
+					<input type="hidden" value="<%= datas[0].id %>" name="id">    
+					<form class="form-horizontal" role="form" method="post" action="/users/update">
+					  <div class="form-group">
+						  <div class="input-group input-group-lg  col-xs-4 col-xs-offset-4">
+								<span class="input-group-addon">用&nbsp;&nbsp;户&nbsp;名</span>
+								<input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" value="<%= datas[0].username %>">
+						  </div>
+					  </div>
+					  
+					  <div class="form-group">
+						<div class="input-group input-group-lg col-xs-4 col-xs-offset-4">
+								<span class="input-group-addon">&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;</span>
+								<input type="email" class="form-control" id="email" name="email" placeholder="请输入Email" value="<%= datas[0].email%>">
+						</div>
+					  </div>
+					  
+					  <div class="form-group">
+						<div class="input-group input-group-lg col-xs-4 col-xs-offset-4">
+								<span class="input-group-addon">Telephone</span>
+								<input type="tel" class="form-control" id="telephone" name="telephone" placeholder="请输入电话" value="<%= datas[0].telephone%>">
+						</div>
+					  </div>
+					  
+					  <div class="form-group">
+						<div class="col-xs-offset-5">
+						  <button type="submit" class="btn btn-info  btn-lg">确定</button>
+						  <button type="reset" class="btn btn-warning  btn-lg">重置</button>
+						</div>
+					  </div>
+					</form>
+				</div>
+			</div><!-- / .modal-body-->
+					<div class="modal-footer" align="center">
+						
+						
+					</div><!-- / .modal-footer-->
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog-->
+</div>
+
+<script>
+
+//触发模态框的同时调用此方法
+function editInfo(obj) {
+		var id = $(obj).attr("id");
+		//获取表格中的一行数据
+		var username = document.getElementById("table").rows[id].cells[1].innerText;
+		var email = document.getElementById("table").rows[id].cells[2].innerText;
+		var telephone = document.getElementById("table").rows[id].cells[3].innerText;
+		//向模态框中传值
+		$('#username').val(username);
+		$('#email').val(email);
+		$('#telephone').val(telephone);
+		$('#Modal_users_update').modal('show');
+	}
+</script>
