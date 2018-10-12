@@ -1,8 +1,10 @@
 <%- include header %>
-<%- include navbar %>		
+<%- include navbar %>	
+
 <div class="container">
-    <input type="hidden" value="<%= datas[0].id %>" name="id">    
+       
     <form class="form-horizontal" role="form" method="post" action="/users/update">
+      <input type="hidden" value="<%= datas[0].id %>" name="id"> 
       <div class="form-group">
           <div class="input-group input-group-lg  col-xs-4 col-xs-offset-4">
                 <span class="input-group-addon">用&nbsp;&nbsp;户&nbsp;名</span>
@@ -32,5 +34,4 @@
       </div>
     </form>
 </div>
-<%- include Modal_Contact %>
 <%- include footer %>

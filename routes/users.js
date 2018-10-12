@@ -16,9 +16,9 @@ router.get('/', function (req, res, next) {
     if(req.cookies.islogin){
         req.session.islogin=req.cookies.islogin;
     }
-		if(req.session.islogin){
-		    res.locals.islogin=req.session.islogin;
-		}
+    if(req.session.islogin){
+        res.locals.islogin=req.session.islogin;
+    }
     //查数据库userinfo表并获取表中所有数据
     pgclient.select('userinfo','','',function (result) {
         //console.log(result);
@@ -71,17 +71,24 @@ router.get('/del/:id', function (req, res) {
 /**
  * 修改
  */
-// router.get('/toUpdate/:id', function (req, res) {
-//     var id = req.params.id;
-//     console.log(id);
-//     pgclient.select('userinfo',{'id':id},'',function (result) {
-//         if(result[0]===undefined){
-//             res.send('修改失败！');
-//         }else{
-//             res.render("users_update", {title: '用户信息更新', datas: result,test:res.locals.islogin});       //直接跳转
-//         }
-//     });
-// });
+router.get('/toUpdate/:id', function (req, res) {
+    //页面跳转时，如果要保留登录信息，需要增加session的传递
+    if(req.cookies.islogin){
+        req.session.islogin=req.cookies.islogin;
+    }
+    if(req.session.islogin){
+        res.locals.islogin=req.session.islogin;
+    }
+    var id = req.params.id;
+    console.log(id);
+    pgclient.select('userinfo',{'id':id},'',function (result) {
+        if(result[0]===undefined){
+            res.send('修改失败！');
+        }else{
+            res.render("users_update", {title: '用户信息更新', datas: result,test:res.locals.islogin});       //直接跳转
+        }
+    });
+});
 
 /**
  * 修改
@@ -89,12 +96,13 @@ router.get('/del/:id', function (req, res) {
  */
 router.post('/update', function (req, res) {
     var id = req.body.id;
+    //console.log('id===='+id);
     var username = req.body.username;
     var email = req.body.email;
     var telephone = req.body.telephone;
     var professional = req.body.professional;
     pgclient.update('userinfo',{'id':id},{'username':username,'email':email,'telephone':telephone},function (err) {
-        if (err) {
+        if (err !='') {
             res.send("修改失败："+err)
         } else {
             res.redirect('/users');
@@ -106,26 +114,66 @@ router.post('/update', function (req, res) {
 /**
  * 搜索
  */
-// router.post('/search', function (req, res) {
-//     var name = req.body.s_name;
-//     var age = req.body.s_age;
-//     var sql = "select * from person";
-//     if (name) {
-//         sql += " and name like '%" + name + "%' ";
-//     }
-//     if (age) {
+router.post('/search', function (req, res) {
+    console.log('come here');
+    var username = req.body['username'];
+    
+    var telephone = req.body['telephone'];
 
-//         sql += " and age=" + age + " ";
-//     }
+    console.log(username+'----'+telephone);
 
-//     sql = sql.replace("and","where");
-//     db.query(sql, function (err, rows) {
-//         if (err) {
-//             res.end("查询失败：", err)
-//         } else {
-//             res.render("users", {title: 'nodeJsDemo', datas: rows, s_name: name, s_age: age});
-//         }
-//     });
-// });
+     //页面跳转时，如果要保留登录信息，需要增加session的传递
+     if(req.cookies.islogin){
+        req.session.islogin=req.cookies.islogin;
+    }
+    if(req.session.islogin){
+        res.locals.islogin=req.session.islogin;
+    }
+    
+    //如果姓名和电话都为空，则查询所有信息；
+    if(!username&&!telephone){
+        //查数据库userinfo表并获取表中所有数据
+        pgclient.select('userinfo','','',function (result) {
+            //console.log(result);
+            if(result[0]===undefined){
+                res.send('没有用户信息！');
+            }else{
+                //页面跳转时，如果要保留登录信息，需要增加session的传递
+                res.render('users', {title: '用户管理', datas: result,test:res.locals.islogin});
+            }
+        })
+    }
+    //如果用户名不为空，则以用户名为条件进行查询
+    if(username){
+        pgclient.select('userinfo',{'username':username},'',function (result) {
+            if(result[0]===undefined){
+                res.send('查询失败！');
+            }else{
+                res.render("users", {title: '用户信息更新', datas: result,test:res.locals.islogin}); //直接跳转
+            }
+        });
+    }
+    //如果电话号码不为空，则以电话号码为条件进行查询
+    if(telephone){
+        pgclient.select('userinfo',{'telephone':telephone},'',function (result) {
+            if(result[0]===undefined){
+                res.send('查询失败！');
+            }else{
+                res.render("users", {title: '用户信息更新', datas: result,test:res.locals.islogin}); //直接跳转
+            }
+        });
+    }
+    //如果姓名和电话号码都不为空，则同时以姓名和电话号码为条件进行查询
+    if(username&&telephone){
+        pgclient.select('userinfo',{'username':username,'telephone':telephone},'',function (result) {
+            if(result[0]===undefined){
+                res.send('查询失败！');
+            }else{
+                res.render("users", {title: '用户信息更新', datas: result,test:res.locals.islogin}); //直接跳转
+            }
+        });
+    }
+    
+});
 
 module.exports = router;

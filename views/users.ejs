@@ -1,13 +1,15 @@
 <%- include header %>
-<%- include navbar %>		
+<%- include navbar %>
+<!-- 如果是登录状态，则进入信息查询页面 -->
+<% if(locals.islogin){%>
 
 <div class="container">
     <div>
-        <form action="/users/search" method="post">
-            姓名：<input type="text" name="s_username" value="" class="text"> &nbsp;&nbsp;
-            电话：<input type="text" name="s_telephone" value="" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"  class="text"> &nbsp;&nbsp;
-            <button type="submit" class="glyphicon glyphicon-search" title="查询"></button>
-        </form>
+        <!-- <form action="/users/search" method="post"> -->
+            姓名：<input type="text" name="s_username" id="s_username" value="" class="text"> &nbsp;&nbsp;
+            电话：<input type="text" name="s_telephone" id="s_telephone" value="" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"  class="text"> &nbsp;&nbsp;
+            <button id="queryinfo" type="submit" class="glyphicon glyphicon-search" title="查询"></button>
+        <!-- </form> -->
         
     </div>
 </div>
@@ -27,7 +29,10 @@
         <th>姓名</th>
         <th>邮箱</th>
         <th>电话</th>
-        <th>操作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/users/add" class="glyphicon glyphicon-plus" title="新增">新增</a></th>
+        <th>操作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/users/add" class="glyphicon glyphicon-plus" title="新增">新增</a>
+        </th>
     </tr>
     </thead>
     <tbody  align="center">
@@ -42,10 +47,10 @@
                 <td >
                     <div class="btn-group operation">
                         
-                        <a data-toggle="modal" data-target="#Modal_users_update" onclick="Values(<%=user.id%>)">修改</a>
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">修改</span>
+                        <a href="/users/toUpdate/<%= user.id %>" title="修改">修改</a>
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/users/del/<%= user.id %> ">删除</a>
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true">删除</span>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                        
                     </div>
                 </td>
@@ -55,14 +60,49 @@
     </tbody>	
 </table>
 </div>
-<script>
+
+<script type="text/javascript">
+
+    $('#queryinfo').on('click',function (e) {
+        var params ={
+    			username: $("#s_username").val(),
+    			telephone: $("#s_telephone").val()
+    		};
+
+        alert('params:'+params);
+        $.ajax({
+            url:'/users/search',
+            type:'post',
+            data:params,
+            dataType:'json',
+            success:function (result) {
+                alert('传输成功');
+                var data = $.parseJSON(result);
+    				alert(data.message);
+            },
+            error:function (err) {
+                alert('系统发生错误'+err);
+            }
+        })
+    })
+
+ </script>
 
 
-function Values(ID){
-    $("#id").val(ID)
-}
-</script>
+<% }else{%>
+    <!-- 否则，提示重新登陆 -->
+    <div id="myAlert" class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>警告！</strong>登陆已超时，请登陆后访问。
+    </div>
+        
+    <script>
+    $(function(){
+        $(".close").click(function(){
+            $("#myAlert").alert();
+        });
+    });
+    </script>
+<% }%>
 
-<%- include Modal_users_update %>
-<%- include Modal_Contact %>
 <%- include footer %>

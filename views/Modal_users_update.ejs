@@ -1,33 +1,33 @@
 
-<div class="modal fade  bs-example-modal-lg" id="Modal_users_update" tabindex="-1" role="dialog" aria-labelledby="Modal_users_update" aria-hidden="true">
+<div class="modal fade  bs-example-modal-lg" id="Modal_users_update" tabindex="-1" role="dialog" aria-labelledby="Modal_users_updateLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="Modal_users_update" align="center">用户信息修改</h4>
+				<h4 class="modal-title" id="Modal_users_updateLabel" align="center">用户信息修改</h4>
 			</div><!-- / .modal-header-->
 			<div class="modal-body">
 				<div class="container">
-					<input type="hidden" value="<%= datas[0].id %>" name="id">    
+					<input type="hidden" value="" name="id">    
 					<form class="form-horizontal" role="form" method="post" action="/users/update">
 					  <div class="form-group">
 						  <div class="input-group input-group-lg  col-xs-4 col-xs-offset-4">
 								<span class="input-group-addon">用&nbsp;&nbsp;户&nbsp;名</span>
-								<input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" value="<%= datas[0].username %>">
+								<input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" value="">
 						  </div>
 					  </div>
 					  
 					  <div class="form-group">
 						<div class="input-group input-group-lg col-xs-4 col-xs-offset-4">
 								<span class="input-group-addon">&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;</span>
-								<input type="email" class="form-control" id="email" name="email" placeholder="请输入Email" value="<%= datas[0].email%>">
+								<input type="email" class="form-control" id="email" name="email" placeholder="请输入Email" value="">
 						</div>
 					  </div>
 					  
 					  <div class="form-group">
 						<div class="input-group input-group-lg col-xs-4 col-xs-offset-4">
 								<span class="input-group-addon">Telephone</span>
-								<input type="tel" class="form-control" id="telephone" name="telephone" placeholder="请输入电话" value="<%= datas[0].telephone%>">
+								<input type="tel" class="form-control" id="telephone" name="telephone" placeholder="请输入电话" value="">
 						</div>
 					  </div>
 					  
