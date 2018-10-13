@@ -5,11 +5,11 @@
 
 <div class="container">
     <div>
-        <!-- <form action="/users/search" method="post"> -->
+        <form action="/users/search" method="post">
             姓名：<input type="text" name="s_username" id="s_username" value="" class="text"> &nbsp;&nbsp;
             电话：<input type="text" name="s_telephone" id="s_telephone" value="" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"  class="text"> &nbsp;&nbsp;
             <button id="queryinfo" type="submit" class="glyphicon glyphicon-search" title="查询"></button>
-        <!-- </form> -->
+        </form>
         
     </div>
 </div>
@@ -61,32 +61,41 @@
 </table>
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
     $('#queryinfo').on('click',function (e) {
-        var params ={
-    			username: $("#s_username").val(),
-    			telephone: $("#s_telephone").val()
-    		};
+        // var params ={
+    	// 		'username': $("#s_username").val(),
+    	// 		'telephone': $("#s_telephone").val()
+    	// 	};
+        
+        var params={};
+        params.username=$("#s_username").val();
+        params.telephone=$("#s_telephone").val();
+        console.log(params.username);
 
-        alert('params:'+params);
+
+        alert('params:'+params.username);
         $.ajax({
-            url:'/users/search',
+            url:'/users/search',//async:false,
             type:'post',
             data:params,
             dataType:'json',
             success:function (result) {
                 alert('传输成功');
-                var data = $.parseJSON(result);
-    				alert(data.message);
+                //var data = $.parseJSON(result);
+    			alert(result);
             },
-            error:function (err) {
-                alert('系统发生错误'+err);
-            }
-        })
+            error:function(data, XMLHttpRequest, textStatus, errorThrown){  
+                alert(data);  
+                alert(XMLHttpRequest.status);  
+                alert(XMLHttpRequest.readyState);  
+                alert(textStatus);  
+            }  
+        });
     })
 
- </script>
+ </script> -->
 
 
 <% }else{%>

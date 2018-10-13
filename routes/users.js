@@ -92,7 +92,6 @@ router.get('/toUpdate/:id', function (req, res) {
 
 /**
  * 修改
- * 用模态窗口，不用get，只用post
  */
 router.post('/update', function (req, res) {
     var id = req.body.id;
@@ -115,15 +114,12 @@ router.post('/update', function (req, res) {
  * 搜索
  */
 router.post('/search', function (req, res) {
-    console.log('come here');
-    var username = req.body['username'];
-    
-    var telephone = req.body['telephone'];
-
-    console.log(username+'----'+telephone);
-
+    //获取页面中搜索框中的用户名参数
+    var username = req.body.s_username;
+    //获取页面中搜索框中的电话号码参数
+    var telephone = req.body.s_telephone;
      //页面跳转时，如果要保留登录信息，需要增加session的传递
-     if(req.cookies.islogin){
+    if(req.cookies.islogin){
         req.session.islogin=req.cookies.islogin;
     }
     if(req.session.islogin){
