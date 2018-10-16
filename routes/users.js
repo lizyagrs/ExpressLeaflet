@@ -135,7 +135,7 @@ router.post('/search', function (req, res) {
                 res.send('没有用户信息！');
             }else{
                 //页面跳转时，如果要保留登录信息，需要增加session的传递
-                res.render('users', {title: '用户管理', datas: result,test:res.locals.islogin});
+                res.render('users', {title: '用户信息查询', datas: result,test:res.locals.islogin});
             }
         })
     }
@@ -143,9 +143,9 @@ router.post('/search', function (req, res) {
     if(username){
         pgclient.select('userinfo',{'username':username},'',function (result) {
             if(result[0]===undefined){
-                res.send('查询失败！');
+                res.send('没有用户信息！');
             }else{
-                res.render("users", {title: '用户信息更新', datas: result,test:res.locals.islogin}); //直接跳转
+                res.render("users", {title: '用户信息查询', datas: result,test:res.locals.islogin}); //直接跳转
             }
         });
     }
@@ -153,9 +153,9 @@ router.post('/search', function (req, res) {
     if(telephone){
         pgclient.select('userinfo',{'telephone':telephone},'',function (result) {
             if(result[0]===undefined){
-                res.send('查询失败！');
+                res.send('没有用户信息！');
             }else{
-                res.render("users", {title: '用户信息更新', datas: result,test:res.locals.islogin}); //直接跳转
+                res.render("users", {title: '用户信息查询', datas: result,test:res.locals.islogin}); //直接跳转
             }
         });
     }
@@ -163,9 +163,9 @@ router.post('/search', function (req, res) {
     if(username&&telephone){
         pgclient.select('userinfo',{'username':username,'telephone':telephone},'',function (result) {
             if(result[0]===undefined){
-                res.send('查询失败！');
+                res.send('没有用户信息！');
             }else{
-                res.render("users", {title: '用户信息更新', datas: result,test:res.locals.islogin}); //直接跳转
+                res.render("users", {title: '用户信息查询', datas: result,test:res.locals.islogin}); //直接跳转
             }
         });
     }

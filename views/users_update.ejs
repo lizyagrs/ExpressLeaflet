@@ -1,8 +1,7 @@
 <%- include header %>
 <%- include navbar %>	
 
-<div class="container">
-       
+<div class="container"> 
     <form class="form-horizontal" role="form" method="post" action="/users/update">
       <input type="hidden" value="<%= datas[0].id %>" name="id"> 
       <div class="form-group">
@@ -11,21 +10,18 @@
                 <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" value="<%= datas[0].username %>">
           </div>
       </div>
-      
       <div class="form-group">
         <div class="input-group input-group-lg col-xs-4 col-xs-offset-4">
                 <span class="input-group-addon">&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;</span>
                 <input type="email" class="form-control" id="email" name="email" placeholder="请输入Email" value="<%= datas[0].email%>">
         </div>
       </div>
-      
       <div class="form-group">
         <div class="input-group input-group-lg col-xs-4 col-xs-offset-4">
                 <span class="input-group-addon">Telephone</span>
                 <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="请输入电话" value="<%= datas[0].telephone%>">
         </div>
       </div>
-      
       <div class="form-group">
         <div class="col-xs-offset-5">
           <button type="submit" class="btn btn-info  btn-lg">修改</button>

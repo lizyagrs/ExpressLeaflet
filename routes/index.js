@@ -15,7 +15,6 @@ router.get('/', function(req, res) {
   	res.render('index', { title: 'HOME',test:res.locals.islogin});
 });
 
-
 router.route('/login')
     .get(function(req, res) {
         if(req.session.islogin){
@@ -30,7 +29,7 @@ router.route('/login')
     .post(function(req, res) {
         
         result=null;
-        //pg.selectFun(client,req.body.username, function (result) {
+        //调用数据库管理类中的查询语句，参数是表名、用户名
 		  pgclient.select('userinfo',{'username': req.body.username},'', function (result) {
             if(result[0]===undefined){
                 res.send('没有该用户');
@@ -68,7 +67,7 @@ router.route('/reg')
         res.render('reg',{title:'注册'});
     })
     .post(function(req,res) {
-        
+        //调用数据库管理类中的写入语句，参数是表名userinfo，username、password、emal、telephone
 		pgclient.save('userinfo',{'username': req.body.username,'password': req.body.password2,'email': req.body.email,'telephone': req.body.telephone}, function (err) {
             pgclient.select('userinfo',{'username': req.body.username},'', function (result) {
 				if(result[0]===undefined){

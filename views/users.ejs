@@ -2,7 +2,7 @@
 <%- include navbar %>
 <!-- 如果是登录状态，则进入信息查询页面 -->
 <% if(locals.islogin){%>
-
+<!--按条件查询-->
 <div class="container">
     <div>
         <form action="/users/search" method="post">
@@ -10,18 +10,12 @@
             电话：<input type="text" name="s_telephone" id="s_telephone" value="" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"  class="text"> &nbsp;&nbsp;
             <button id="queryinfo" type="submit" class="glyphicon glyphicon-search" title="查询"></button>
         </form>
-        
     </div>
 </div>
 
+<!--用户信息显示的表单-->
 <div class="container">
-<table id="table"
-        data-toggle="table"
-        data-show-export="false"
-        data-pagination="true"
-        data-click-to-select="true"
-        data-toolbar="#toolbar"
-        >
+<table id="table"    data-toggle="table"     data-show-export="false"     data-pagination="true"     data-click-to-select="true"    data-toolbar="#toolbar">
     <thead>
     <tr>
         <th data-field="state" data-checkbox="true"></th>
