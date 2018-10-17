@@ -58,6 +58,7 @@ function init(){
 		opacity: 0.5,
 		transparent: true
 	});//.addTo(map);
+	
 	//定义底图
 	var baseMaps = {
 	    "OpenstreetMap": openstreetmap,
@@ -69,18 +70,37 @@ function init(){
         "高德地图": Gaode,
         "高德影像": Gaodeimage
 	};
+	
+	
+	//荆州行政区边界WFS服务的完整路径
+	var url = "http://47.106.158.161:6060/geoserver/Hubei/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Hubei%3AJingzhouCountyBoundary&maxFeatures=50&outputFormat=application%2Fjson"
+	var JingZhou=loadWFS('Hubei:JingzhouCountyBoundary',url) ;
+	
+	//斧头湖三县边界WFS服务的完整路径
+	var url = "http://47.106.158.161:6060/geoserver/Hubei/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Hubei%3AThreeCountyBoundary&maxFeatures=50&outputFormat=application%2Fjson"
+	var futouhu3county=loadWFS('Hubei:ThreeCountyBoundary',url) ;
+
+	//斧头湖咸安境内规划打点位置WFS服务的完整路径
+	var url = "http://47.106.158.161:6060/geoserver/Hubei/wms?"
+	var FuTouLake_XianAnPoint= L.tileLayer.wms(url, {
+		layers: 'Hubei:FuTouLake_XianAnPoint',
+		format: "image/png",
+		crs: L.CRS.EPSG4326,
+		opacity: 0.5,
+		transparent: true
+	});//.addTo(map);
+
 	//定义专题图层
 	var overlayMaps = {
-		"荆州县行政区边界": bounderLayer 
+		"荆州县行政区边界": JingZhou,
+		//"环斧头湖三县行政区边界": futouhu3county,
+		//"斧头湖咸安境内早期规划打点位置": FuTouLake_XianAnPoint
 	};
 	//加载底图与专题图层
 	L.control.layers(baseMaps, overlayMaps).addTo(map);
 	
 
 
-	//WFS服务的完整路径
-	var url = "http://47.106.158.161:6060/geoserver/Hubei/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Hubei%3AJingzhouCountyBoundary&maxFeatures=50&outputFormat=application%2Fjson"
-	loadWFS('Hubei:JingzhouCountyBoundary',url) ;
 	
 }
 

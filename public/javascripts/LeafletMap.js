@@ -74,5 +74,5 @@ function init(){
 		"荆州县行政区边界": bounderLayer 
 	};
 	//加载底图与专题图层
-	L.control.layers(baseMaps, overlayMaps).addTo(map);
+	//L.control.layers(baseMaps, overlayMaps).addTo(map);
 }
