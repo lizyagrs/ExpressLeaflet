@@ -14,7 +14,8 @@
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="https://unpkg.com/popper.js@1.14.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-		
+<!--		<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+-->		
 		<!-- <script type="text/javascript" src="../javascripts/bootstrap.min.js" ></script> -->
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	   	
@@ -36,12 +37,14 @@
 	    
 	    <!-- Load html map css -->
 	    <link rel="stylesheet" href="../stylesheets/leafletAPI.css" />
+	    <link rel="stylesheet" href="../stylesheets/leaflet-search.css" />
+	    <link rel="stylesheet" href="../stylesheets/leaflet-search.mobile.css" />
+	    <!-- Load LeafletMap JavaScript self-->
+		<script type="text/javascript" src="../javascripts/LeafletMap.js" ></script>		
 	    <!-- Load ChineseTmsProviders JavaScript plugins-->
 	    <script type="text/javascript" src="../javascripts/leaflet.ChineseTmsProviders.js" ></script>
-	    <!-- Load LeafletMap JavaScript self-->
-<!--		<script type="text/javascript" src="../javascripts/LeafletMap.js" ></script>
--->		<!--Load LoadWFSGeoJSON.js JavaScript -->
-		<script type="text/javascript" src="../javascripts/LoadWFSGeoJSON.js" ></script>
+		<!--Load leaflet-search.js JavaScript -->
+		<script type="text/javascript" src="../javascripts/leaflet-search.js" ></script>
 		
 	<title><%= title %></title>
 </head>
