@@ -84,15 +84,87 @@ function init(){
 		},
 	});
 
+	// control that shows state info on hover
+	var info = L.control();
+	//加载地图控件，显示详细信息
+	info.onAdd = function (map) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+	};
+	
+	//窗体信息实时更新
+	info.update = function (props) {
+		this._div.innerHTML = '<h4>行政区</h4>' +  (props ?
+			'<b>省名称：' + props.name + '</b><br />行政区代码：' + props.code : 'Hover over a state');
+	};
+	//将信息窗口加载到地图上
+	info.addTo(map);
+	
+	//高亮显示鼠标点击的地图要素
+	function highlightFeature(e) {
+		var layer = e.target;
+		//图层样式设置
+		layer.setStyle({
+			weight: 5,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+		//浏览器判断
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+		//更新要素属性
+		info.update(layer.feature.properties);
+	}
+
+	//定义JSON数据
+	var YangziRiver_MiddlePro_GeoJSON;
+
+	//重置高亮要素
+	function resetHighlight(e) {
+		YangziRiver_MiddlePro_GeoJSON.resetStyle(e.target);
+		info.update();
+	}
+
+	//缩放到要素
+	function zoomToFeature(e) {
+		map.fitBounds(e.target.getBounds());
+	}
+
+	//点击地图要素事件回调函数
+	function onEachFeature(feature, marker) {
+		//点击弹出信息窗口
+			marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code),
+			marker.on({
+				//高亮显示
+				mouseover: highlightFeature,
+				//重新设置高亮要素
+				mouseout: resetHighlight,
+				//缩放到要素
+				click: zoomToFeature,
+				//调用读数据的函数
+				showGDP(feature.properties.code),
+			});
+	}
+	
+	
 	//长江中游四省行政边界GeoJSON服务的完整路径
 	var url = "http://47.106.158.161:6060/geoserver/Hubei/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Hubei%3AYangziRiver_MiddlePro&maxFeatures=50&outputFormat=application%2Fjson"
 	//定义GeoJSON图层
-	var YangziRiver_MiddlePro_GeoJSON = L.geoJson(null, { 
-		//回调函数
-		onEachFeature: function(feature, marker) {
-			//点击弹出信息窗口
-			marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code);
-		}
+	YangziRiver_MiddlePro_GeoJSON = L.geoJson(null, { 
+		onEachFeature: onEachFeature,
+			//回调函数
+//			onEachFeature: function(feature, marker) {
+//			//点击弹出信息窗口
+//			marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code),
+//			marker.on({
+//				mouseover: highlightFeature,
+//				mouseout: resetHighlight,
+//				click: zoomToFeature,
+//			});
+//		}
 	}).addTo(map);//默认打开图层
 	//ajax调用
 	$.ajax({
@@ -104,6 +176,8 @@ function init(){
 			YangziRiver_MiddlePro_GeoJSON.addData(data);
 		},
 	});
+
+	
 
 	//定义底图
 	var baseMaps = {

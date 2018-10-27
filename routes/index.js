@@ -80,5 +80,23 @@ router.route('/reg')
         });
     });
 
+//添加查询省GDP表的路由
+router.get('/GDPQuery', function(req, res) {
+	pgclient.select('Province_GDP', {'pro_code': req.query.code}, '', function(data) {
+		if(data[0] === undefined) {
+			res.send('返回空值');
+		} else {
+			res.status(200)
+				.json({
+					data: data
+				});
+			console.log("查询：" + req.query.code);
+			console.log("返回结果：" + data[0].pro_name)
+		}
+	});
+
+});
+
+
 module.exports = router;
 
