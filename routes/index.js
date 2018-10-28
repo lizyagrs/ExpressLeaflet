@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var pgclient =require('dao/pgHelper');
 pgclient.getConnection();
-
+var cors = require('cors');
+	router.use(cors());
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -81,8 +82,12 @@ router.route('/reg')
     });
 
 //添加查询省GDP表的路由
-router.get('/GDPQuery', function(req, res) {
-	pgclient.select('Province_GDP', {'pro_code': req.query.code}, '', function(data) {
+router.get('/GDPQuery/:code', function(req, res) {
+	res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8','Access-Control-Allow-Origin':'*'}); 
+	
+	var code = req.params.code;
+    console.log('路由中的code::::::'+code);
+	pgclient.select('Province_GDP', {'pro_code': code}, '', function(data) {
 		if(data[0] === undefined) {
 			res.send('返回空值');
 		} else {
@@ -90,7 +95,6 @@ router.get('/GDPQuery', function(req, res) {
 				.json({
 					data: data
 				});
-			console.log("查询：" + req.query.code);
 			console.log("返回结果：" + data[0].pro_name)
 		}
 	});

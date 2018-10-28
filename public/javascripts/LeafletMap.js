@@ -135,19 +135,47 @@ function init(){
 
 	//点击地图要素事件回调函数
 	function onEachFeature(feature, marker) {
+		
+		var code = feature.properties.code;
+		console.log('code:::'+code);
+		//调用读数据的函数
+		//getDatabyCode(code);
+		var url = 'http://localhost:3000/GDPQuery?code='+ code
+		testAjax(url,code);
 		//点击弹出信息窗口
-			marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code),
-			marker.on({
-				//高亮显示
-				mouseover: highlightFeature,
-				//重新设置高亮要素
-				mouseout: resetHighlight,
-				//缩放到要素
-				click: zoomToFeature,
-				//调用读数据的函数
-				showGDP(feature.properties.code),
-			});
+		marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+code),
+		marker.on({
+			//高亮显示
+			mouseover: highlightFeature,
+			//重新设置高亮要素
+			mouseout: resetHighlight,
+			//缩放到要素
+			//click: zoomToFeature,
+			
+		});
 	}
+	
+	
+	
+	function getDatabyCode(code){
+		$.ajax({
+			url: 'http://47.106.158.161:3000/GDPQuery?code=' + code,
+//				data:{  
+//					code:code
+//				 },  
+			type: 'get',
+			dataType: 'json',
+			outputFormat: 'text/javascript',
+			success:function(data){
+				console.log(data.GDP);
+				document.getElementById('popForm').innerText=data.GDP;
+			},
+			error:function(data){
+				alert('error::'+data.length);
+			}
+		});
+	}
+	
 	
 	
 	//长江中游四省行政边界GeoJSON服务的完整路径

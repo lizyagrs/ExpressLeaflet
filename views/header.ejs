@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
 	    <!-- Latest bootstrap compiled and minified CSS -->
 		<!-- <link rel="stylesheet" href="../stylesheets/bootstrap.min.css" /> -->
 		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,8 +24,7 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 		
 		<!-- Latest compiled and minified Locales -->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
-	    
+		<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>   
 	    <script type="text/javascript" src="../javascripts/bootstrap-table-export.js" ></script>
 	    
 	    <!-- Load Leaflet from CDN -->
@@ -39,12 +39,16 @@
 	    <link rel="stylesheet" href="../stylesheets/leafletAPI.css" />
 	    <link rel="stylesheet" href="../stylesheets/leaflet-search.css" />
 	    <link rel="stylesheet" href="../stylesheets/leaflet-search.mobile.css" />
+	    
+	    
 	    <!-- Load LeafletMap JavaScript self-->
 		<script type="text/javascript" src="../javascripts/LeafletMap.js" ></script>		
 	    <!-- Load ChineseTmsProviders JavaScript plugins-->
 	    <script type="text/javascript" src="../javascripts/leaflet.ChineseTmsProviders.js" ></script>
 		<!--Load leaflet-search.js JavaScript -->
 		<script type="text/javascript" src="../javascripts/leaflet-search.js" ></script>
+		<script type="text/javascript" src="../javascripts/PopupWindow.js"></script>
+		<script type="text/javascript" src="../javascripts/GDPQuery.js" ></script>
 		
 	<title><%= title %></title>
 </head>
