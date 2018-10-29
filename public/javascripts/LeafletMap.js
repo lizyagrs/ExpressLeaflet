@@ -132,46 +132,143 @@ function init(){
 	function zoomToFeature(e) {
 		map.fitBounds(e.target.getBounds());
 	}
-
+	var content = '<div style="width: 320px; height: 320px;" id="popupwindow"></div>';
 	//点击地图要素事件回调函数
 	function onEachFeature(feature, marker) {
 		
 		var code = feature.properties.code;
-		console.log('code:::'+code);
+		
 		//调用读数据的函数
 		//getDatabyCode(code);
-		var url = 'http://localhost:3000/GDPQuery?code='+ code
-		testAjax(url,code);
+		//var url = 'http://localhost:3000/GDPQuery?code='+ code
+		//console.log('url:::'+url);
+		//testAjax(url,code);
+		//getDatabyCode(code);
+		//showGDP(code);
+		
+		marker.bindPopup(content, {});
 		//点击弹出信息窗口
 		marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+code),
-		marker.on({
+		
+		marker.on('popupopen', function(e) {
 			//高亮显示
-			mouseover: highlightFeature,
+			//mouseover: highlightFeature,
 			//重新设置高亮要素
-			mouseout: resetHighlight,
+			//mouseout: resetHighlight,
 			//缩放到要素
 			//click: zoomToFeature,
-			
+			showPopup();
+			var xValue=[];
+        	var yValue=[];
+			$.ajax({
+				url: '/GDPQuery?code=' + code, 
+				type: 'get',
+				dataType: 'json',
+				outputFormat: 'text/javascript',
+				success:function(result){
+					console.log("读取数据库的结果回调函数里result"+result);
+					//document.getElementById('popForm').innerText=result[0].GDP;
+					 //请求成功时执行该函数内容，result即为服务器返回的json对象
+					 if (result) {
+						for(var i=0;i<result.length;i++){  
+							//取出x轴--年份     
+							xValue.push(result[i].DataYear);
+						}
+						for(var i=0;i<result.length;i++){
+							//取出y轴--GDP数据
+							yValue.push(result[i].GDP);
+						}
+						getChart(xValue,yValue);
+				 	}
+
+
+				},
+				error:function(data){
+					//alert('error::'+data[0]);
+					//请求失败时执行该函数
+					alert("图表请求数据失败!");
+				}
+			});
+
+
+
+
 		});
 	}
 	
-	
-	
+	//Echarts构建函数
+	function getChart(xValue,yValue){
+		console.log("xValue:"+xValue);
+		console.log("yValue:"+yValue);
+		//div初始化
+		var myChart=echarts.init(document.getElementById('popForm'));
+		var option = {
+			title: {
+				text: '历年GDP柱状图'
+			},
+			color: ['#3398DB'],
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow'
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			//x横轴
+			xAxis: [
+				{
+					type: 'category',
+					//data值为ajax传递过来的值
+					data :xValue,
+					axisTick: {
+						alignWithLabel: true
+					}
+				}
+			],
+			yAxis: {},
+			series: [
+				{
+					name: 'GDP(万元)',
+					type: 'bar',
+					barWidth: '40%',
+					data: yValue,
+					//鼠标放在柱状图上面时，显示数值
+					itemStyle: {
+						normal: {
+							label: {
+								show: true,
+								position:'top'
+							}
+						}
+					}
+				}
+			]
+		};
+		//清除上一次数据缓存
+		myChart.clear();
+		//开始制图
+		myChart.setOption(option);
+	}
+
+
+	//用ajax将选中省份的code传给路由，并从数据库中读取相关数据返回
 	function getDatabyCode(code){
 		$.ajax({
-			url: 'http://47.106.158.161:3000/GDPQuery?code=' + code,
-//				data:{  
-//					code:code
-//				 },  
+			url: '/GDPQuery?code=' + code, 
 			type: 'get',
 			dataType: 'json',
 			outputFormat: 'text/javascript',
 			success:function(data){
-				console.log(data.GDP);
-				document.getElementById('popForm').innerText=data.GDP;
+				console.log(data[0].GDP);
+				document.getElementById('popForm').innerText=data[0].GDP;
 			},
 			error:function(data){
-				alert('error::'+data.length);
+				alert('error::'+data[0]);
 			}
 		});
 	}

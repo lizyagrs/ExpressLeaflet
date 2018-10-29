@@ -82,20 +82,18 @@ router.route('/reg')
     });
 
 //添加查询省GDP表的路由
-router.get('/GDPQuery/:code', function(req, res) {
-	res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8','Access-Control-Allow-Origin':'*'}); 
+router.get('/GDPQuery', function(req, res) {
+	//res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8','Access-Control-Allow-Origin':'*'}); 
 	
-	var code = req.params.code;
-    console.log('路由中的code::::::'+code);
-	pgclient.select('Province_GDP', {'pro_code': code}, '', function(data) {
+    var code = req.query.code;
+    //console.log('路由中的code::::::'+code);
+	pgclient.selectprovince_gdpByCode('province_gdp', code,'', function(data) {
+        //console.log('路由中的data::::::'+data[0].GDP);
 		if(data[0] === undefined) {
 			res.send('返回空值');
 		} else {
-			res.status(200)
-				.json({
-					data: data
-				});
-			console.log("返回结果：" + data[0].pro_name)
+            res.send(data);
+			//console.log("返回结果：" + JSON.stringify(data))
 		}
 	});
 

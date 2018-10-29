@@ -25,7 +25,7 @@ function showGDP(str) {
 		}
 	}
 	console.log('str：：：'+str);
-	xmlhttp.open("GET", "http://47.106.158.161:3000/GDPQuery?code=" + str, true);
+	xmlhttp.open("GET", "http://localhost:3000/GDPQuery?code=" + str, true);
 	xmlhttp.send();
 }
 
@@ -69,7 +69,12 @@ function testAjax(url,code){
 	  xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	      console.log('服务器响应成功');
-	      document.getElementById("popForm").innerHTML=xmlhttp.responseText;
+		  document.getElementById("popForm").innerHTML=xmlhttp.responseText;
+		  document.getElementById("popForm").innerHTML = "【省名称】"+data[0].pro_name + '<br/>' 
+			+"【行政区代码】" + data[0].pro_code+ '<br/>' 
+			+"【GDP】"+data[0].GDP + '<br/>'
+			+"【年份】"+data[0].DataYear;
+			console.log(data[0].pro_name);
 	    }
 	  }
 	  xmlhttp.open("GET", url, true);
