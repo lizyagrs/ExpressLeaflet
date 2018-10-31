@@ -145,7 +145,7 @@ function init(){
 		//getDatabyCode(code);
 		//showGDP(code);
 		var content = '<div style="width: 520px; height: 320px;" id="popupwindow"></div>';
-		marker.bindPopup(content, {});
+		marker.bindPopup(content, {maxWidth : 560});
 		//点击弹出信息窗口
 		//marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+code),
 		
