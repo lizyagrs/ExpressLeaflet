@@ -84,21 +84,44 @@ router.route('/reg')
 //添加查询省GDP表的路由
 router.get('/GDPQuery', function(req, res) {
 	//res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8','Access-Control-Allow-Origin':'*'}); 
-	
+	//var code = req.body.s_pro_code;
     var code = req.query.code;
-    //console.log('路由中的code::::::'+code);
-	pgclient.selectprovince_gdpByCode('province_gdp', code,'', function(data) {
+    console.log('路由中的code::::::'+code);
+	pgclient.selectprovince_gdpByCode('province_gdp', code,'', function(result) {
         //console.log('路由中的data::::::'+data[0].GDP);
-		if(data[0] === undefined) {
+		if(result[0] === undefined) {
 			res.send('返回空值');
 		} else {
-            res.send(data);
-			//console.log("返回结果：" + JSON.stringify(data))
+            //res.render("echartsdb", {title: '省GDP查询', datas: result}); //直接跳转
+            res.send(result);
+			console.log("返回结果：" + JSON.stringify(result))
 		}
 	});
 
 });
 
+/**
+ * 查询列表页
+ */
+router.get('/echartsdb', function (req, res, next) {
+    //页面跳转时，如果要保留登录信息，需要增加session的传递
+    if(req.cookies.islogin){
+        req.session.islogin=req.cookies.islogin;
+    }
+    if(req.session.islogin){
+        res.locals.islogin=req.session.islogin;
+    }
+    //查数据库userinfo表并获取表中所有数据
+    pgclient.select('province_gdp','','',function (result) {
+        //console.log(result);
+        if(result[0]===undefined){
+            res.send('没有用户信息！');
+        }else{
+           	//页面跳转时，如果要保留登录信息，需要增加session的传递
+            res.render('echartsdb', {title: '图表数据测试', datas: result,test:res.locals.islogin});
+        }
+    })
+});
 
 module.exports = router;
 

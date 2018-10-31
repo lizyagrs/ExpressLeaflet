@@ -1,4 +1,5 @@
 function showPopup() { //弹出
+	console.log("here:popupwindow");
 	var objDiv = document.getElementById("popDiv");
 	objDiv.style.top = "50px"; //设置弹出窗距离上边界的距离
 	objDiv.style.left = "200px"; //设置弹出窗距离左边界的距离
@@ -6,6 +7,7 @@ function showPopup() { //弹出
 	objDiv.style.height = "200px"; //设置弹出窗的高度
 	//objDiv.style.display = "block";
 	objDiv.style.visibility = "visible";
+	console.log(objDiv.style.visibility);
 }
 
 function hidePopup() { //关闭

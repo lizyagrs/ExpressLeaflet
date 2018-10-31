@@ -1,0 +1,152 @@
+<%- include header %>
+<%- include navbar %>
+
+<!--按条件查询-->
+<div class="container">
+    <div>
+<!--        <form action="/index/GDPQuery" method="post">
+-->
+            行政区代码：<input type="text" name="s_pro_code" id="s_pro_code" value="" class="text"> &nbsp;&nbsp;
+            <button id="queryinfo" type="submit" class="glyphicon glyphicon-search" title="查询"></button>
+<!--        </form>
+-->
+    </div>
+</div>
+
+<!--用户信息显示的表单-->
+<div class="container">
+<table id="table"    data-toggle="table"     data-show-export="false"     data-pagination="true"     data-click-to-select="true"    data-toolbar="#toolbar">
+    <thead>
+    <tr>
+        <th data-field="state" data-checkbox="true"></th>
+        <th>行政区名称</th>
+        <th>行政区代码</th>
+        <th>GDP</th>
+        <th>年份</th>
+    </tr>
+    </thead>
+    <tbody  align="center">
+        <% if (datas.length) { %>
+            <% datas.forEach(function(gdp){ %>
+            <tr >
+                <td data-checkbox="false"></td>
+                <td ><%= gdp.pro_name %></td>
+                <td ><%= gdp.pro_code %></td>
+                <td ><%= gdp.GDP %></td>
+                <td ><%= gdp.datayear %></td>
+            </tr>
+            <% }) %>
+        <% } %>
+    </tbody>	
+</table>
+</div>
+
+<div class="container" id="chartsDiv">
+	<div id="EchartsShow"></div>
+</div>
+
+<script>
+	$('#queryinfo').on('click',function (e) {
+		//var params={};
+        var pro_code=$("#s_pro_code").val();
+        console.log(pro_code);
+        getDatabyCode(pro_code);
+	});
+	//用ajax将选中省份的code传给路由，并从数据库中读取相关数据返回
+	function getDatabyCode(code){
+		var xValue=[];
+		var yValue=[];
+		$.ajax({
+			url: '/GDPQuery?code=' + code, 
+			type: 'get',
+			dataType: 'json',
+			outputFormat: 'text/javascript',
+			success:function(result){
+				console.log(result[0].GDP);
+				
+				//document.getElementById('popForm').innerText=data[0].GDP;
+				console.log("读取数据库的结果回调函数里result"+result);
+				//document.getElementById('popForm').innerText=result[0].GDP;
+					//请求成功时执行该函数内容，result即为服务器返回的json对象
+					if (result) {
+					for(var i=0;i<result.length;i++){  
+						//取出x轴--年份     
+						xValue.push(result[i].datayear);
+					}
+					for(var i=0;i<result.length;i++){
+						//取出y轴--GDP数据
+						yValue.push(result[i].GDP);
+					}
+					//调用Echarts函数生成Echarts图表
+					getChart(xValue,yValue);
+				}
+			},
+			error:function(data){
+				alert('error::'+data[0]);
+				alert("图表请求数据失败!");
+			}
+		});
+	}
+	
+	//Echarts构建函数
+	function getChart(xValue,yValue){
+		console.log("xValue:"+xValue);
+		console.log("yValue:"+yValue);
+		
+		//div初始化
+		var myChart=echarts.init(document.getElementById('EchartsShow'));
+		var option = {
+			title: {
+				text: '历年GDP柱状图'
+			},
+			color: ['#3398DB'],
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow'
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			//x横轴
+			xAxis: [
+				{
+					type: 'category',
+					//data值为ajax传递过来的值
+					data :xValue,
+					axisTick: {
+						alignWithLabel: true
+					}
+				}
+			],
+			yAxis: {},
+			series: [
+				{
+					name: 'GDP(万元)',
+					type: 'bar',
+					barWidth: '40%',
+					data: yValue,
+					//鼠标放在柱状图上面时，显示数值
+					itemStyle: {
+						normal: {
+							label: {
+								show: true,
+								position:'top'
+							}
+						}
+					}
+				}
+			]
+		};
+		//清除上一次数据缓存
+		myChart.clear();
+		//开始制图
+		myChart.setOption(option);
+	}
+</script>
+
+<%- include footer %>
