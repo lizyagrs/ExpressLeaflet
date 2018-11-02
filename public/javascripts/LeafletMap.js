@@ -84,178 +84,37 @@ function init(){
 		},
 	});
 
-	// control that shows state info on hover
-	var info = L.control();
-	//加载地图控件，显示详细信息
-	info.onAdd = function (map) {
-		this._div = L.DomUtil.create('div', 'info');
-		this.update();
-		return this._div;
-	};
+
+
+//*******************点击响应与回调函数部分（点击多边形弹出窗口并显示Echart图表）**************************
 	
-	//窗体信息实时更新
-	info.update = function (props) {
-		this._div.innerHTML = '<h4>行政区</h4>' +  (props ?
-			'<b>省名称：' + props.name + '</b><br />行政区代码：' + props.code : 'Hover over a state');
-	};
-	//将信息窗口加载到地图上
-	info.addTo(map);
-	
-	//高亮显示鼠标点击的地图要素
-	function highlightFeature(e) {
-		var layer = e.target;
-		//图层样式设置
-		layer.setStyle({
-			weight: 5,
-			color: '#666',
-			dashArray: '',
-			fillOpacity: 0.7
-		});
-		//浏览器判断
-		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-			layer.bringToFront();
-		}
-		//更新要素属性
-		info.update(layer.feature.properties);
-	}
-
-	//定义JSON数据
-	var YangziRiver_MiddlePro_GeoJSON;
-
-	//重置高亮要素
-	function resetHighlight(e) {
-		YangziRiver_MiddlePro_GeoJSON.resetStyle(e.target);
-		info.update();
-	}
-
-	//缩放到要素
-	function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
-	}
 	//点击地图要素事件回调函数
 	function onEachFeature(feature, marker) {
-		
+		//获取选中要素的行政区编码
 		var code = feature.properties.code;
-		
-		//调用读数据的函数
-		//getDatabyCode(code);
-		//var url = 'http://localhost:3000/GDPQuery?code='+ code
-		//console.log('url:::'+url);
-		//testAjax(url,code);
-		//getDatabyCode(code);
-		//showGDP(code);
+		//新建弹出窗体并设置大小
 		var content = '<div style="width: 520px; height: 320px;" id="popupwindow"></div>';
+		//点击弹出窗口，并设置最大宽度，因为默认宽度为301，不一定够一个Echart的正常显示
 		marker.bindPopup(content, {maxWidth : 560});
 		//点击弹出信息窗口
 		//marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+code),
 		
 		marker.on('popupopen',function(e){
+			//定义chart图表显示容器
 			var myChart=echarts.init(document.getElementById('popupwindow'));
-			var xValue=[];
-			var yValue=[];
-			$.ajax({
-				url: '/GDPQuery?code=' + code, 
-				type: 'get',
-				dataType: 'json',
-				outputFormat: 'text/javascript',
-				success:function(result){
-					console.log(result[0].GDP);
-					
-					//document.getElementById('popForm').innerText=data[0].GDP;
-					console.log("读取数据库的结果回调函数里result"+result);
-					//document.getElementById('popForm').innerText=result[0].GDP;
-						//请求成功时执行该函数内容，result即为服务器返回的json对象
-						if (result) {
-						for(var i=0;i<result.length;i++){  
-							//取出x轴--年份     
-							xValue.push(result[i].datayear);
-						}
-						for(var i=0;i<result.length;i++){
-							//取出y轴--GDP数据
-							yValue.push(result[i].GDP);
-						}
-						//调用Echarts函数生成Echarts图表
-						//getChart(xValue,yValue);
-						var option = {
-							title: {
-								text: '历年GDP柱状图'
-							},
-							color: ['#3398DB'],
-							tooltip: {
-								trigger: 'axis',
-								axisPointer: {
-									type: 'shadow'
-								}
-							},
-							grid: {
-								left: '3%',
-								right: '4%',
-								bottom: '3%',
-								containLabel: true
-							},
-							//x横轴
-							xAxis: [
-								{
-									type: 'category',
-									//data值为ajax传递过来的值
-									data :xValue,
-									axisTick: {
-										alignWithLabel: true
-									}
-								}
-							],
-							yAxis: {},
-							series: [
-								{
-									name: 'GDP(万元)',
-									type: 'bar',
-									barWidth: '40%',
-									data: yValue,
-									//鼠标放在柱状图上面时，显示数值
-									itemStyle: {
-										normal: {
-											label: {
-												show: true,
-												position:'top'
-											}
-										}
-									}
-								}
-							]
-						};
-						//清除上一次数据缓存
-						myChart.clear();
-						//开始制图
-						myChart.setOption(option);
-						
-					}
-				},
-				error:function(data){
-					alert('error::'+data[0]);
-					alert("图表请求数据失败!");
-				}
-			});
 			
-			//高亮显示
-			//mouseover: highlightFeature,
-			//重新设置高亮要素
-			//mouseout: resetHighlight,
-			//缩放到要素
-			//click: zoomToFeature,
-			//点击打开弹出窗口
-			//click:openPopup,
-			//用code读取数据库查询GDP
-			//getDatabyCode(code)
-
+			//**********************根据行政区编码查询数据加对应的数据并传给myChart加载柱状图
+			getDatabyCode(code,myChart);
 		});
 	}
-	
-	function openPopup(){
-		$("#EchartsShow").css("display","block");
-	}
 
-	//用ajax将选中省份的code传给路由，并从数据库中读取相关数据返回
-	function getDatabyCode(code){
+//--------------------------------------------------------------图属关联---------------------------------------------------------------------------------------------------------------------
+	/*
+	 * 用ajax将选中省份的code传给路由，并从数据库中读取相关数据返回
+	 * code：行政区代码，用于地图要素和属性数据库的关联字段
+	 * myChart：chart图表对象
+	 */
+	function getDatabyCode(code,myChart){
 		var xValue=[];
 		var yValue=[];
 		$.ajax({
@@ -264,11 +123,8 @@ function init(){
 			dataType: 'json',
 			outputFormat: 'text/javascript',
 			success:function(result){
-				console.log(result[0].GDP);
-				
-				//document.getElementById('popForm').innerText=data[0].GDP;
-				console.log("读取数据库的结果回调函数里result"+result);
-				//document.getElementById('popForm').innerText=result[0].GDP;
+				//测试是否返回数据
+				//console.log(result[0].GDP);
 					//请求成功时执行该函数内容，result即为服务器返回的json对象
 					if (result) {
 					for(var i=0;i<result.length;i++){  
@@ -279,28 +135,34 @@ function init(){
 						//取出y轴--GDP数据
 						yValue.push(result[i].GDP);
 					}
-					//调用Echarts函数生成Echarts图表
-					getChart(xValue,yValue);
+					//获取省行政区名称
+					var pro_name = result[0].pro_name
+					//**********************调用Echarts函数生成Echarts图表**********************
+					getChart(xValue,yValue,myChart,pro_name);
 				}
 			},
 			error:function(data){
-				alert('error::'+data[0]);
-				alert("图表请求数据失败!");
+				alert('error::'+data[0]+'---图表请求数据失败');
 			}
 		});
 	}
 	
-	//Echarts构建函数
-	function getChart(xValue,yValue){
-		//showPopup();
+	
+	/*
+	 * Echarts构建函数
+	 * xValue:横坐标参数
+	 * yValue:纵坐标参数
+	 * myChart：echart对象
+	 * pro_name省行政区名称
+	 */
+	function getChart(xValue,yValue,myChart,pro_name){
+		//测试值是否正常传递进来
 		console.log("xValue:"+xValue);
 		console.log("yValue:"+yValue);
-		
-		//div初始化
-		var myChart=echarts.init(document.getElementById('popupwindow'));
 		var option = {
 			title: {
-				text: '历年GDP柱状图'
+				//显示到弹出窗口的标题栏
+				text: pro_name+'历年GDP柱状图'
 			},
 			color: ['#3398DB'],
 			tooltip: {
@@ -351,22 +213,13 @@ function init(){
 		myChart.setOption(option);
 	}
 	
-	
-	//长江中游四省行政边界GeoJSON服务的完整路径
+	//****************************长江中游四省行政边界GeoJSON服务加载***********************************
+	//WFS服务完整路径
 	var url = "http://47.106.158.161:6060/geoserver/Hubei/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Hubei%3AYangziRiver_MiddlePro&maxFeatures=50&outputFormat=application%2Fjson"
 	//定义GeoJSON图层
 	YangziRiver_MiddlePro_GeoJSON = L.geoJson(null, { 
+		//响应和回调函数
 		onEachFeature: onEachFeature,
-			//回调函数
-//			onEachFeature: function(feature, marker) {
-//			//点击弹出信息窗口
-//			marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code),
-//			marker.on({
-//				mouseover: highlightFeature,
-//				mouseout: resetHighlight,
-//				click: zoomToFeature,
-//			});
-//		}
 	}).addTo(map);//默认打开图层
 	//ajax调用
 	$.ajax({
@@ -379,8 +232,10 @@ function init(){
 		},
 	});
 
-	
+//*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
 
+
+//----------------------------------------------------------------------------------------------------------底图部分-------------------------------------------------------------------------------------------------------------------------------------------
 	//定义底图
 	var baseMaps = {
 	    "OpenstreetMap": openstreetmap,
