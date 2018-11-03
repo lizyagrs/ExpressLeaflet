@@ -81,10 +81,8 @@ router.route('/reg')
         });
     });
 
-//添加查询省GDP表的路由
+//添加关联字段查询省GDP表的路由
 router.get('/GDPQuery', function(req, res) {
-	//res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8','Access-Control-Allow-Origin':'*'}); 
-	//var code = req.body.s_pro_code;
     var code = req.query.code;
     console.log('路由中的code::::::'+code);
 	pgclient.selectprovince_gdpByCode('province_gdp', code,'', function(result) {

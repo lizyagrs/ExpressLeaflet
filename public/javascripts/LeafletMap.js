@@ -96,9 +96,7 @@ function init(){
 		var content = '<div style="width: 520px; height: 320px;" id="popupwindow"></div>';
 		//点击弹出窗口，并设置最大宽度，因为默认宽度为301，不一定够一个Echart的正常显示
 		marker.bindPopup(content, {maxWidth : 560});
-		//点击弹出信息窗口
-		//marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+code),
-		
+		//点击弹出信息窗口		
 		marker.on('popupopen',function(e){
 			//定义chart图表显示容器
 			var myChart=echarts.init(document.getElementById('popupwindow'));
