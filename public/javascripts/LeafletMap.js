@@ -194,7 +194,7 @@ function init(){
 		
 		//****************************GDP_Polygon图层GeoJSON服务加载***********************************
 		//GDP_Polygon边界GeoJSON服务的完整路径
-		var url = "http://localhost:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3AGDP_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
+		var url = "http://47.92.246.52:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3AGDP_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
 		//定义GeoJSON图层
 		var GDP_Polygon_GeoJSON = L.geoJson(null, { 
 					//响应和回调函数
