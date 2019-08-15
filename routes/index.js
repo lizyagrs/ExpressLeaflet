@@ -85,7 +85,7 @@ router.route('/reg')
 router.get('/GDPQuery', function(req, res) {
     var code = req.query.code;
     console.log('路由中的code::::::'+code);
-	pgclient.selectprovince_gdpByCode('province_gdp', code,'', function(result) {
+	pgclient.selectpolygon_gdpByCode('polygon_gdp', code,'', function(result) {
         //console.log('路由中的data::::::'+data[0].GDP);
 		if(result[0] === undefined) {
 			res.send('返回空值');
@@ -110,7 +110,7 @@ router.get('/echartsdb', function (req, res, next) {
         res.locals.islogin=req.session.islogin;
     }
     //查数据库userinfo表并获取表中所有数据
-    pgclient.select('province_gdp','','',function (result) {
+    pgclient.select('polygon_gdp','','',function (result) {
         //console.log(result);
         if(result[0]===undefined){
             res.send('没有用户信息！');
