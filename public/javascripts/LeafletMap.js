@@ -287,6 +287,8 @@ function init(){
 
 	//搜索控件响应函数
 	searchControl.on('search:locationfound', function(e) {
+		//移除上一次查询图层高亮
+		map.removeLayer(this._markerSearch)
 		//定义高亮样式
 		e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
 		if(e.layer._popup)
