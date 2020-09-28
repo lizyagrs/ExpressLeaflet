@@ -8,9 +8,8 @@ function init(){
  * ******************************************底图加载************************************************************************************
  */
 	//openstreetmap底图
-	var openstreetmap=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
-	// mapbox-street底图
-	var mapboxstreet = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	//var openstreetmap=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar',}).addTo(map);
+	var openstreetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 	    maxZoom: 18,
 	    id: 'mapbox.streets',
@@ -43,15 +42,16 @@ function init(){
 	var url='http://39.100.31.4:8080/geoserver/LightWebGIS/wms'
 	//构建专题地图服务连接串
 	const bounderLayer  = L.tileLayer.wms(url, {
-		layers: 'LightWebGIS:Search_Polygons',
+		layers: 'LightWebGIS:Search_Polygon',
 		format: "image/png",
 		crs: L.CRS.EPSG4326,
 		opacity: 0.5,
 		transparent: true
 	});
-	//Search_Polygons边界GeoJSON服务的完整路径
-	var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3ASearch_Polygons&maxFeatures=50&outputFormat=application%2Fjson"
-	var Search_PolygonsGeoJSON = L.geoJson(null, { 
+	//Search_Polygon边界GeoJSON服务的完整路径
+	//var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3ASearch_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
+	var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3ASearch_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
+	var Search_PolygonGeoJSON = L.geoJson(null, { 
 		onEachFeature: function(feature, marker) {
 				marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code);
 		}
@@ -63,7 +63,7 @@ function init(){
 		outputFormat: 'text/javascript',
 		success: function(data) {
 			//将调用出来的结果添加至之前已经新建的空geojson图层中
-			Search_PolygonsGeoJSON.addData(data);
+			Search_PolygonGeoJSON.addData(data);
 		},
 	});
 
@@ -194,6 +194,7 @@ function init(){
 		
 		//****************************GDP_Polygon图层GeoJSON服务加载***********************************
 		//GDP_Polygon边界GeoJSON服务的完整路径
+		//var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3AGDP_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
 		var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3AGDP_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
 		//定义GeoJSON图层
 		var GDP_Polygon_GeoJSON = L.geoJson(null, { 
@@ -216,7 +217,7 @@ function init(){
 	//定义底图
 	var baseMaps = {
 	    "OpenstreetMap": openstreetmap,
-	    "MapboxStreets": mapboxstreet,
+	    //"MapboxStreets": mapboxstreet,
         "谷歌地图": GoogleMap,
         "谷歌影像": Googlesatellite,
         "高德地图": Gaode,
@@ -224,7 +225,7 @@ function init(){
 	};
 	//定义专题图层
 	var overlayMaps = {
-		"Search_Polygons": Search_PolygonsGeoJSON ,
+		"Search_Polygons": Search_PolygonGeoJSON,
 		"GDP_Polygon": GDP_Polygon_GeoJSON
 	};
 	//加载底图与专题图层控件
@@ -269,7 +270,7 @@ function init(){
 	//定义搜索控件
 	var searchControl = new L.Control.Search({
 		//定义搜索查询的图层
-		layer: Search_PolygonsGeoJSON,
+		layer: Search_PolygonGeoJSON,
 		//定义搜索关键字
 		propertyName: 'name',
 		//搜索提示Tips
