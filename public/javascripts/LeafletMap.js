@@ -40,7 +40,7 @@ function init(){
  * ******************************************专题图层加载******************************************************************************************************************************
  */
 	//地图服务地址
-	var url='http://47.92.246.52:8080/geoserver/LightWebGIS/wms'
+	var url='http://39.100.31.4:8080/geoserver/LightWebGIS/wms'
 	//构建专题地图服务连接串
 	const bounderLayer  = L.tileLayer.wms(url, {
 		layers: 'LightWebGIS:Search_Polygons',
@@ -50,7 +50,7 @@ function init(){
 		transparent: true
 	});
 	//Search_Polygons边界GeoJSON服务的完整路径
-	var url = "http://47.92.246.52:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3ASearch_Polygons&maxFeatures=50&outputFormat=application%2Fjson"
+	var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3ASearch_Polygons&maxFeatures=50&outputFormat=application%2Fjson"
 	var Search_PolygonsGeoJSON = L.geoJson(null, { 
 		onEachFeature: function(feature, marker) {
 				marker.bindPopup('<h4 style="color:'+feature.properties.color+'">'+'行政区名称：'+ feature.properties.name+'<br/>行政区编码：'+feature.properties.code);
@@ -194,7 +194,7 @@ function init(){
 		
 		//****************************GDP_Polygon图层GeoJSON服务加载***********************************
 		//GDP_Polygon边界GeoJSON服务的完整路径
-		var url = "http://47.92.246.52:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3AGDP_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
+		var url = "http://39.100.31.4:8080/geoserver/LightWebGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=LightWebGIS%3AGDP_Polygon&maxFeatures=50&outputFormat=application%2Fjson"
 		//定义GeoJSON图层
 		var GDP_Polygon_GeoJSON = L.geoJson(null, { 
 					//响应和回调函数
