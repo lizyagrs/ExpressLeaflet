@@ -2,7 +2,7 @@ var map;
 //地图初始化
 function init(){	
 	//定义地图中心及缩放级别
-	map = L.map('map').setView([30.201885, 112.524585 ], 9);
+	map = L.map('map').setView([30.201885, 112.524585 ], 5);
 
 /*
  * ******************************************底图加载************************************************************************************
@@ -65,8 +65,10 @@ function init(){
 			//将调用出来的结果添加至之前已经新建的空geojson图层中
 			Search_PolygonGeoJSON.addData(data);
 		},
-	});
+	});	
 
+	//map.addLayer(Search_PolygonGeoJSON);
+	
 	//*******************点击响应与回调函数部分（点击多边形弹出窗口并显示Echart图表）**************************
 		
 		//点击地图要素事件回调函数
@@ -98,6 +100,7 @@ function init(){
 			var yValue=[];
 			$.ajax({
 				url: '/GDPQuery?code=' + code, 
+				
 				type: 'get',
 				dataType: 'json',
 				outputFormat: 'text/javascript',
@@ -121,6 +124,7 @@ function init(){
 					}
 				},
 				error:function(data){
+					alert(url);
 					alert('error::'+data[0]+'---图表请求数据失败');
 				}
 			});
@@ -267,6 +271,9 @@ function init(){
 /*
  * *********************************************************************空间要素查询与高亮显示****************************************************************
  */
+	
+	
+	
 	//定义搜索控件
 	var searchControl = new L.Control.Search({
 		//定义搜索查询的图层
@@ -289,7 +296,7 @@ function init(){
 	//搜索控件响应函数
 	searchControl.on('search:locationfound', function(e) {
 		//移除上一次查询图层高亮
-		map.removeLayer(this._markerSearch)
+		//map.removeLayer(this._markerSearch)
 		//定义高亮样式
 		e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
 		if(e.layer._popup)
@@ -297,9 +304,9 @@ function init(){
 			//搜索回调函数
 	}).on('search:collapsed', function(e) {
 		//每个要素图层的样式响应函数
-		featuresLayer.eachLayer(function(layer) {	//restore feature color
+		Search_PolygonGeoJSON.eachLayer(function(layer) {	//restore feature color
 			//重新给要素图层设定样式
-			featuresLayer.resetStyle(layer);
+			Search_PolygonGeoJSON.resetStyle(layer);
 		});	
 	});
 	map.addControl( searchControl );  //inizialize search control
